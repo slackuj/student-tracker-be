@@ -48,3 +48,35 @@ export const deleteByID = async (
         next(error);
     }
 }
+
+export const updateByID = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
+    try {
+        const data = req.body;
+        const response = await studentTrackerService.updateByID(data);
+        res.status(201).json({
+            data: response
+        });
+    } catch (error) {
+        next(error);
+    }
+}
+
+export const fetchByID = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
+    try {
+        const id = req.params.id;
+        const data = await studentTrackerService.fetchByID(String(id));
+        res.status(201).json({
+            data
+        });
+    } catch (error) {
+        next(error);
+    }
+}

@@ -45,3 +45,31 @@ export const deleteByID = async (id: string) => {
     console.log('deleted student successfully');
     return 'deleted student successfully.';
 }
+
+type studentUpdateData = Pick<StudentProps, 'id'> & Partial<Omit<StudentProps, 'id'>>;
+export const updateByID = async (data: studentUpdateData) => {
+    const student = students.find(student => student.id === data.id);
+    if (!student) {
+        return 'student not found';
+    }
+
+    // handle updates
+    data.name && (student.name = data.name);
+    data.rollNumber && (student.rollNumber = data.rollNumber);
+    data.contactNumber && (student.contactNumber = data.contactNumber);
+    data.grade && (student.grade = data.grade);
+    data.gender && (student.gender = data.gender);
+    data.imgURL && (student.imgURL = data.imgURL);
+
+    console.log(students);
+    return 'student updated successfully';
+}
+
+export const fetchByID = async (id: string) => {
+    const student = students.find(student => student.id === id);
+    if (!student) {
+        return 'student not found';
+    }
+
+    return student;
+}

@@ -9,6 +9,8 @@ const router = Router();
 router.post("/", studentTrackerController.create);
 router.get("/", studentTrackerController.fetchALL);
 router.delete("/", studentTrackerController.deleteByID);
+router.put("/", studentTrackerController.updateByID);
+router.get("/:id", studentTrackerController.fetchByID);
 
 /*router.get("/:id", (req: Request, res: Response) => {
     //res.send(req.params.id);
