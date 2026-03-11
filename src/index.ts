@@ -1,19 +1,17 @@
 import express from "express";
 import routes from "./routes";
 import { errorHandler } from "./middlewares/errorHandler";
+import dotenv from "dotenv";
+import connectDB from "./config/db";
 
+dotenv.config();
 const app = express();
-
-// never use magic numbers in your port
-const PORT = 4000;
-
-/*app.get("/", (req, res) => {
-    res.send("Welcome to the server");
-});*/
+connectDB();
 
 // parse json in req
 app.use(express.json());
 
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Server started on port ${PORT}`);
 });

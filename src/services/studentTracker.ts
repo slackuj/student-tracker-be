@@ -1,72 +1,84 @@
-import { StudentProps } from '../interfaces/studentTracker';
-import {setStudents, students} from '../models/studentTracker';
+import {StudentProps} from '../interfaces/studentTracker';
+import StudentsModel from '../models/studentTracker';
 
 export const create = async (data: Omit<StudentProps, 'id' | 'shouldDelete'>) => {
-    const newStudent: StudentProps = {
-        id: crypto.randomUUID(),
-        name: data.name,
-        rollNumber: data.rollNumber,
-        contactNumber: data.contactNumber,
-        grade: data.grade,
-        gender: data.gender,
-        imgURL: data.imgURL ?? '',
-        shouldDelete: false
-    }
-
-    students.push(newStudent);
-    console.log('added new student', newStudent);
-    return newStudent;
+    return await StudentsModel.create(data);
 }
 
 export const fetchALL = async (req: any) => {
     const { grade, gender } = req;
     if (grade && gender){
-        return students.filter(student =>
-        student.gender === gender && student.grade === grade);
+        return await StudentsModel.find({ gender: gender, grade: grade}).exec();
     }
     if (grade) {
-        return students.filter(student => student.grade === grade);
+        return await StudentsModel.find({ grade: grade}).exec();
     }
     if (gender){
-        return students.filter(student => student.gender === gender);
+        return await StudentsModel.find({ gender: gender }).exec();
     }
-    return students;
+    // assuming soft delete exists
+    return await StudentsModel.find({shouldDelete: false}).exec();
 }
 
 export const deleteByID = async (id: string) => {
-    const student = students.find(student => student.id === id);
-    if (!student) {
-        return 'student not found';
-    }
-    student.shouldDelete = true;
-    // handle deletion
-    const updatedStudents = students.filter(student => !student.shouldDelete);
-    setStudents(updatedStudents);
-    console.log('deleted student successfully');
+    // soft deletion
+    await StudentsModel.findByIdAndUpdate(
+        id,
+        { shouldDelete: true }
+    ).exec();
+
+    // performing hard deletion
+    // also consider handling shouldDelete ??? HOW?
+    await StudentsModel.findByIdAndDelete(id).exec();
     return 'deleted student successfully.';
 }
 
 type studentUpdateData = Pick<StudentProps, 'id'> & Partial<Omit<StudentProps, 'id'>>;
 export const updateByID = async (data: studentUpdateData) => {
-    const student = students.find(student => student.id === data.id);
+    /*const student = StudentsModel.findById(data.id).exec();
     if (!student) {
         return 'student not found';
-    }
+    }*/
+
+    let updates = {};
 
     // handle updates
-    data.name && (student.name = data.name);
-    data.rollNumber && (student.rollNumber = data.rollNumber);
-    data.contactNumber && (student.contactNumber = data.contactNumber);
-    data.grade && (student.grade = data.grade);
-    data.gender && (student.gender = data.gender);
-    data.imgURL && (student.imgURL = data.imgURL);
+    data.name && (
+        updates = { ...updates, name : data.name }
+    );
 
-    console.log(students);
-    return 'student updated successfully';
+    data.rollNumber && (
+        updates = { ...updates, rollNumber : data.rollNumber }
+    );
+
+    data.contactNumber && (
+        updates = { ...updates, contactNumber : data.contactNumber }
+    );
+
+    data.grade && (
+        updates = { ...updates, grade : data.grade }
+    );
+
+    data.gender && (
+        updates = { ...updates, gender : data.gender }
+    );
+
+    data.imgURL && (
+        updates = { ...updates, imgURL : data.imgURL }
+    );
+
+    //console.log('id', data.id);
+    //console.log(updates);
+    await StudentsModel.findByIdAndUpdate(
+        data.id,
+        updates
+    ).exec();
+
+    return "student successfully updated.";
 }
 
 export const fetchByID = async (id: string) => {
-    const student = students.find(student => student.id === id);
+    const student = StudentsModel.findById(id).exec();
     if (!student) {
         return 'student not found';
     }

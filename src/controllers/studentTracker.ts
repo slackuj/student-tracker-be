@@ -56,6 +56,7 @@ export const updateByID = async (
 ) => {
     try {
         const data = req.body;
+        //console.log(data);
         const response = await studentTrackerService.updateByID(data);
         res.status(201).json({
             data: response
