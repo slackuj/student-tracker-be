@@ -78,7 +78,7 @@ export const updateByID = async (data: studentUpdateData) => {
 }
 
 export const fetchByID = async (id: string) => {
-    const student = StudentsModel.findById(id).exec();
+    const student = await StudentsModel.findById(id).exec();
     if (!student) {
         return 'student not found';
     }

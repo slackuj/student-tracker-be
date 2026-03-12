@@ -4,7 +4,7 @@ import {
     validateParams,
     validateQueryParams,
     validateRequestBody
-} from "../models/validator";
+} from "../middlewares/validator";
 import {
     createStudentSchema,
     deleteByIDSchema,
