@@ -18,6 +18,15 @@ const studentSchema = new Schema<IStudents>({
     { timestamps: true }
 );
 
+studentSchema.post("findOne", function(error: any, doc: any, next: any){
+
+    if(error.name === "CastError" && error.path === '_id'){
+        next(new Error(`Student with id ${error.value} not found`));
+    } else {
+        next();
+    }
+})
+
 const StudentsModel = mongoose.model<IStudents>("Students", studentSchema);
 
 export default StudentsModel;
