@@ -23,7 +23,7 @@ export const fetchALL = async (
     next: NextFunction
 ) => {
     try {
-        const response = await studentTrackerService.fetchALL(req.query);
+        const response = await studentTrackerService.fetchALL();
 
         res.status(200).json({
             data: response
@@ -39,7 +39,7 @@ export const deleteByID = async (
     next: NextFunction
 ) => {
     try {
-        const id = req.query.id;
+        const id = req.params.id;
         const data = await studentTrackerService.deleteByID(String(id));
         res.status(200).json({
             data
@@ -55,9 +55,10 @@ export const updateByID = async (
     next: NextFunction
 ) => {
     try {
+        const id = req.params.id;
         const data = req.body;
         //console.log(data);
-        const response = await studentTrackerService.updateByID(data);
+        const response = await studentTrackerService.updateByID(String(id), data);
         res.status(201).json({
             data: response
         });

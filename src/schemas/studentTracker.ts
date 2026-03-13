@@ -33,3 +33,4 @@ export const updateStudentSchema  = z.object({
 });
 //export const updateStudentSchema = createStudentSchema.partial();
 export const fetchByIDSchema = deleteByIDSchema;
+export const updateByIDSchema = deleteByIDSchema;

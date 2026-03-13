@@ -3,13 +3,20 @@ import routes from "./routes";
 import { errorHandler } from "./middlewares/errorHandler";
 import dotenv from "dotenv";
 import connectDB from "./config/db";
+import cors from "cors";
 
 dotenv.config();
 const app = express();
 connectDB();
+const corsOptions = {
+    origin: "http://localhost:5173",
+    method: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
+    // credentials: true
+};
 
 // parse json in req
 app.use(express.json());
+app.use(cors(corsOptions));
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
