@@ -19,7 +19,7 @@ const router = Router();
 router.post("/", validateRequestBody(createStudentSchema), studentTrackerController.create);
 router.get("/", studentTrackerController.fetchALL);
 router.delete("/:id", validateParams(deleteByIDSchema), studentTrackerController.deleteByID);
-router.put("/:id", validateParams(updateByIDSchema), validateRequestBody(updateStudentSchema), studentTrackerController.updateByID);
+router.patch("/:id", validateParams(updateByIDSchema), validateRequestBody(updateStudentSchema), studentTrackerController.updateByID);
 router.get("/:id", validateParams(fetchByIDSchema), studentTrackerController.fetchByID);
 
 /*router.get("/:id", (req: Request, res: Response) => {
