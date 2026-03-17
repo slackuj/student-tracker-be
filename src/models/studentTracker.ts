@@ -15,7 +15,18 @@ const studentSchema = new Schema<IStudents>({
     imgURL: { type: String, default: "" },
     shouldDelete: { type: Boolean, default: false }
 },
-    { timestamps: true }
+    { 
+	    timestamps: true ,
+	    toJSON: {
+		    virtuals: true, // ensures 'id' virtual is included
+		    versionKey: false, // removes '__v'
+		    transform: (_doc, ret: Partial<IStudents>) => {
+			    delete ret._id; // removes '_id'
+			    return ret;
+		    }
+	    }
+
+    }
 );
 
 studentSchema.post("findOne", function(error: any, doc: any, next: any){

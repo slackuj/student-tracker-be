@@ -7,7 +7,7 @@ export const createStudentSchema = z.object({
     contactNumber: z.number().min(9000000000).max(9999999999),
     grade: z.enum(['A', 'B', 'C', 'D', 'F']),
     gender: z.enum(["Male", "Female", "Other"]),
-    imgURL: z.string().min(10).optional()
+    imgURL: z.string().optional()
 });
 
 export const fetchALLSchema = z.object({
@@ -23,7 +23,6 @@ export const deleteByIDSchema = z.object({
 });
 
 export const updateStudentSchema  = z.object({
-    id: z.string(),
     name: z.string().min(5).optional(),
     rollNumber: z.number().min(1).optional(),
     contactNumber: z.number().min(9000000000).max(9999999999).optional(),
